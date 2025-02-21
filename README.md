@@ -19,18 +19,26 @@ Ensure you have the following installed and set up before running the scripts:
 
 1. **Start the PostgreSQL server.**  
 
-2. **Inject the database** by restoring `pkmon.dump.sql` into PostgreSQL:  
+2. **Remove any existing database and create a new one:**  
 
    ```sh
-   psql -U your_username -d your_database -f pkmon.dump.sql
+   # Remove an old database if it exists  
+   # WARNING: This will delete all Views and Functions loaded into the database  
+   dropdb --if-exists pkmon  
+
+   # Create a new database  
+   createdb pkmon  
+
+   # Load the SQL Dump File into the database  
+   psql pkmon -f pkmon.dump.sql  
    ```
 
-   Replace `your_username` with your PostgreSQL username and `your_database` with the database name you want to use.
+   After this step, you should see a lot of output (e.g., `SET`, `CREATE`, `ALTER`, etc.).
 
 3. **Run the helper script** to set up necessary functions and views:  
 
    ```sh
-   psql -U your_username -d your_database -f helpers.sql
+   psql pkmon -f helpers.sql
    ```
 
 4. **Execute the Python scripts** to retrieve the required outputs:  
@@ -43,7 +51,6 @@ Ensure you have the following installed and set up before running the scripts:
    ```
 
    The results will be printed directly in the command line.
-
 
 
 
@@ -217,6 +224,47 @@ Attributes have been removed to make the relations more readable
 ER diagram of Pokémon attributes
 Relations have been removed to make the attributes more readable
 ![alt text](pokemon-attributes-ER.png)
+
+# Database Summery
+After setting up the database, you can verify its contents using the `dbpop` function. This function provides an overview of the number of rows in each table.  
+
+#### **Access the Database:**  
+
+```sh
+psql pkmon
+```
+
+#### **Run the `dbpop` Function:**  
+
+```sql
+SELECT * FROM dbpop();
+```
+
+#### **Expected Output:**  
+
+| Table Name              |Number of Rows|
+|-------------------------|--------------|
+| abilities               |          297 |
+| egg_groups              |           15 |
+| encounter_requirements  |       44,492 |
+| encounters              |       40,280 |
+| evolution_requirements  |          650 |
+| evolutions              |          535 |
+| games                   |           39 |
+| in_group                |        1,494 |
+| knowable_abilities      |        2,696 |
+| learnable_moves         |    1,262,002 |
+| locations               |        3,542 |
+| moves                   |          915 |
+| pokedex                 |       11,819 |
+| pokemon                 |        1,191 |
+| requirements            |          830 |
+| type_effectiveness      |          120 |
+| types                   |           18 |
+(17 rows)  
+
+This provides a quick summary of the database and helps verify that the data has been successfully loaded.
+
 
 # Final Note
 This project is based on my university database coursework. The specifications, query questions, database, and visuals were provided by the course team (this spec is a simplified version of the original). My contribution includes implementing the logic for querying data in q1.py, q2.py, q4.py, and q5.py. The original data and tables were supplied by the team.
