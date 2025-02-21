@@ -218,11 +218,15 @@ Pokémon can **breed**, but only with other Pokémon in the same **Egg Group**.
 # The ER diagram
 
 ER diagram of Pokémon relations
+
 Attributes have been removed to make the relations more readable
+
 ![alt text](pokemon-relations-ER.png)
 
 ER diagram of Pokémon attributes
+
 Relations have been removed to make the attributes more readable
+
 ![alt text](pokemon-attributes-ER.png)
 
 # Database Summery
